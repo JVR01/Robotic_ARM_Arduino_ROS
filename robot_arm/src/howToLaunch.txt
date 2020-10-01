@@ -1,0 +1,23 @@
+#First Step Rviz and Joint Rqt_controller
+roslaunch mrm_description rviz.launch
+
+roslaunch mrm_description gazebo2.launch  ##launches gazebo2 also
+
+roslaunch mrm_description gazebo1.launch
+
+rosrun topic_tools  relay /simple_model/joint_stes getinfo ##to remap a topic but publishing both of them with values
+
+##Update 10.06.2020
+
+roslaunch mrm_description construct.launch    #### to launch all
+rosrun topic_tools  relay /simple_model/joint_states getinfo
+rosrun rosserial_python serial_node.py /dev/ttyUSB0
+sudo chmod a+rw /dev/ttyUSB0
+rostopic echo /simple_model/joint_states
+
+rostopic pub toggle_led std_msgs/Empty --once   ##only then Arduino will send the motor to the desired position
+
+
+rostopic pub -1 /simple_model/base_to_second_joint_position_controller/command std_msgs/Float64 "data: 3.1416"
+
+Rosnode added name get_send..py #it sends a tooggle empty value when it detects a Publishd command value ( topic /simple_model/base_to_second_joint_sition_controller/command)

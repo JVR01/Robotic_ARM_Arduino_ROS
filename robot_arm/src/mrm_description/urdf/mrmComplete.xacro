@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+
+<robot name="simple_example" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find mrm_description)/urdf/materials.xacro" />
+
+<link name="world"/>
+
+<joint name="fixed" type="fixed">
+  <parent link="world"/>
+  <child link="base_link"/>
+</joint>
+
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <geometry>
+    <box size="0.01 0.01 0.01"/>
+         <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/basecone.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/basecone.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="10" />
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+    <!--joint name="joint1" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0 0 0.5"/>
+        <parent link="base_link"/>
+        <child link="link1"/>
+    </joint-->
+    <joint name="joint1" type="continuous">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0 0 2"/>
+        <parent link="base_link"/>
+        <child link="link1"/>
+        <!--dynamics damping="0.7"/-->
+    </joint>
+
+
+
+    <link name="link1">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 1"/>
+            <geometry>
+                <cylinder radius="0.35" length="0.4"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+
+        <collision>
+          <origin rpy="0 0 0" xyz="0 0 1"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.01"/>
+                <!--cylinder radius="0.35" length="0.4"/-->
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="2.0" />
+            <origin rpy="0 0 0" xyz="0 0 1"/>
+            <inertia ixx="0.0002835" ixy="0.0" ixz="0.0" iyy="0.0002835" iyz="0.0" izz="0.000324" />
+        </inertial>
+    </link>
+
+
+    <joint name="joint2" type="fixed">
+        <axis xyz="0 0 0" />
+        <!--limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" /-->
+        <origin rpy="0 0 0" xyz="0 0 0.5"/>
+        <parent link="link1"/>
+        <child link="halter1"/>
+    </joint>
+
+  <link name="halter1">
+    <collision>
+      <origin xyz="-0.55 -0.25 0.8" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.01 0.01 0.01"/>
+          <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/shoulderplate.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+
+    </collision>
+
+    <visual>
+      <origin xyz="-0.55 -0.25 0.8" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/shoulderplate.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="-0.55 -0.25 0.8" rpy="0 0 0"/>
+      <inertia ixx="0.0002835" ixy="0.0" ixz="0.0" iyy="0.0002835" iyz="0.0" izz="0.000324" />
+    </inertial>
+  </link>
+
+
+  <joint name="halter1_zwerg" type="fixed">
+        <axis xyz="0 0 1" />
+        <!--limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" /-->
+        <origin rpy="0 0 0" xyz="-0.4 0 0.2"/>
+        <parent link="halter1"/>
+        <child link="zwerg"/>
+  </joint>
+
+ <link name="zwerg">
+    <collision>
+         <origin xyz="0 0 1" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.01 0.01 0.01"/>
+          <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/zwerg.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/zwerg.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <inertia ixx="0.0002835" ixy="0.0" ixz="0.0" iyy="0.0002835" iyz="0.0" izz="0.000324" />
+    </inertial>
+
+
+  </link>
+
+
+   <!-- ROS Control plugin for Gazebo -->
+   <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+	  <!--this is the namespace in the yaml file-->
+      <robotNamespace>/simple_model</robotNamespace>
+      
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <transmission name="base_to_second_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="motor1">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="joint1">
+      
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface-->
+     <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+</robot>

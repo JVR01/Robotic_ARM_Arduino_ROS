@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+<!--I put this here/-->
+<param name="robot_description"
+  command="$(find xacro)/xacro --inorder '$(find mrm_description)/urdf/mrm.xacro'" />
+
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find mrm_description)/config/config.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	output="screen" ns="/simple_model" args="joint_state_controller base_to_second_joint_position_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" 
+          pkg="robot_state_publisher" 
+          type="robot_state_publisher" 
+          respawn="false" 
+          output="screen">
+        <remap from="joint_states" to="/simple_model/joint_states" />
+    </node>
+
+
+</launch>

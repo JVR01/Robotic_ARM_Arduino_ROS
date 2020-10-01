@@ -1,0 +1,4 @@
+# gazebo_ros_control_params.yaml
+gazebo_ros_control/pid_gains:
+  joint1: {p: 1.0, i: 0.0, d: 1.0}
+  # More joints...

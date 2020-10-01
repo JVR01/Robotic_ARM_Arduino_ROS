@@ -1,0 +1,178 @@
+<?xml version="1.0" ?>
+
+<robot name="simple_example" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find mrm_description)/urdf/materials.xacro" />
+
+<link name="world"/>
+
+<joint name="fixed" type="fixed">
+  <parent link="world"/>
+  <child link="base_link"/>
+</joint>
+
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <geometry>
+    <box size="0.01 0.01 0.01"/>
+         <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/basecone.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/basecone.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="10" />
+      <origin xyz="0 0 0.75" rpy="-3.1416 0 0"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2" />
+    </inertial>
+  </link>
+
+    <joint name="joint2" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="link_joint2"/>
+        <!--dynamics damping="0.7"/-->
+    </joint>
+
+
+<link name="link_joint2">
+    <collision>
+         <origin xyz="0 0.005 1" rpy="0 3.1416 1.57"/>
+      <geometry>
+          <box size="0.01 0.01 0.01"/>
+          <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/zwerg.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+
+    </collision>
+
+    <visual>
+      <!--origin xyz="0 0 0" rpy="0 0 -1.57"/-->
+	  <origin xyz="-0.75 0 1.3" rpy="0 3.1416 1.57"/> 
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/Joint2Support.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <!--material name="blue"/-->
+         <material name="grey">
+             <color rgba="0.1 0.1 0.1 1.0"/>
+           </material>
+    </visual>
+
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="-0.32 0.005 0.365" rpy="0 3.1416 1.57"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2" />
+    </inertial>
+</link>
+    
+
+<joint name="joint3" type="revolute">
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin rpy="-1.57 0 0" xyz="0 0 1.3"/>
+        <parent link="link_joint2"/>
+        <child link="link_joint3"/>
+        <!--dynamics damping="0.7"/-->
+</joint>
+
+
+<link name="link_joint3">
+    
+
+    <visual>
+      <!--origin xyz="0 0 0" rpy="0 0 -1.57"/-->
+	  <origin xyz="-1.1 0 0" rpy="0 3.1416 1.57"/> 
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/RohrHalterungJoint2_allinOne.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <!--material name="blue"/-->
+         <material name="orange">
+             <color rgba="0.1 0.1 0.1 1.0"/>
+           </material>
+    </visual>
+
+
+    <collision>
+         <origin xyz="0 0.005 1" rpy="0 3.1416 1.57"/>
+      <geometry>
+          <box size="0.01 0.01 0.01"/>
+          <!--mesh filename="package://mrm_description/urdf/robot_arm_stl/zwerg.STL" scale="0.01 0.01 0.01"/-->
+      </geometry>
+
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="-0.32 0.005 0.365" rpy="0 3.1416 1.57"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2" />
+    </inertial>
+</link>    
+
+
+
+<joint name="joint4" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin rpy="0 0 0" xyz="-1.3 0 -2.1"/>
+        <parent link="link_joint3"/>
+        <child link="link_joint4"/>
+        <!--dynamics damping="0.7"/-->
+</joint>
+
+
+<link name="link_joint4">
+    
+
+    <visual>
+      <!--origin xyz="0 0 0" rpy="0 0 -1.57"/-->
+	  <origin xyz="0 0 0" rpy="0 3.1416 1.57"/> 
+      <geometry>
+        <mesh filename="package://mrm_description/urdf/robot_arm_stl/zwerg_Cylinder.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <!--material name="blue"/-->
+         <material name="blue">
+             <color rgba="0.1 0.1 0.1 1.0"/>
+           </material>
+    </visual>
+
+
+
+
+    <collision>
+         <origin xyz="0 0.005 1" rpy="0 3.1416 1.57"/>
+      <geometry>
+          <box size="0.01 0.01 0.01"/>
+      </geometry>
+
+    </collision>
+
+
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="-0.32 0.005 0.365" rpy="0 3.1416 1.57"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2" />
+    </inertial>
+</link>
+
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace></robotNamespace>
+      <controlPeriod>0.001</controlPeriod>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+</gazebo>
+
+
+
+
+
+
+
+</robot>

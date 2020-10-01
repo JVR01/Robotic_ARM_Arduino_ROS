@@ -1,0 +1,21 @@
+controller_list:
+  - name: fake_all_controller
+    joints:
+      - joint2
+      - joint3
+      - joint4
+      - id_3
+      - id_5
+      - id_6
+      - id_7
+  - name: fake_mios_controller
+    joints:
+      - joint2
+      - joint3
+      - joint4
+  - name: fake_mano_controller
+    joints:
+      - id_7
+initial:  # Define initial robot poses.
+  - group: all
+    pose: pos1
