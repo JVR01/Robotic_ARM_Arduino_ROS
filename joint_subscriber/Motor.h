@@ -6,7 +6,7 @@ class Motor {
     int stps=800;
   
     long totalsteps = stps*ratio;
-    float motorPosition;
+    float motorPosition_;
     float input = 0;
 
     int delayTime=140;
@@ -15,7 +15,7 @@ class Motor {
   //double ratioY = 38.4;
   
     bool executed = true;
- 
+    bool revert_ = false;
 
 
  public:
@@ -31,20 +31,23 @@ class Motor {
 
  void move(float input){
    bool dir;    
-   if (input>=0){dir=true;}
-   else if (input<0){dir=false;}
-  
+   if (input>=0){dir=false;}
+   else if (input<0){dir=true;}
+   
+   if (revert_== true){dir = !dir;}
+   
    totalsteps = round(stps*ratio*abs(input)/(2*3.1416)) ;
  
    if ( executed == true ){  
     
       step(dir, dirPin, stepPin, totalsteps );
     
-      motorPosition = motorPosition + input; 
+      motorPosition_ = motorPosition_ + input; 
       executed = false;
-      char number[20] = "dog";
-      String(motorPosition).toCharArray(number, 10);
+      //char number[20] = "dog";
+      //String(motorPosition_).toCharArray(number, 10);
   }
+
  }
  
  void step(boolean dir, byte dirPin, byte stepperPin, int steps){
@@ -61,13 +64,24 @@ class Motor {
     digitalWrite(stepperPin, LOW);
 
     delayMicroseconds(delayTime); 
-    //nh.spinOnce();
+    
 
   }
-  //nh.logwarn("I did move the motors");
-  Serial.print("I did move the motor: " );
-  Serial.println(steps);
+  
   }
 
+  float motorPosition(){
+    return motorPosition_;
+    
+    }
+  void set_executed(bool value){
+    executed = value;
+    
+    }
+    
+ void revert(bool value){
+    revert_ = value;
+    //return revert_;
+    }
   //class end
 };
